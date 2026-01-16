@@ -35,7 +35,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "corsheaders",
+   
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "accounts",
     "hotels",
     "dashboard",
+     "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -159,6 +160,10 @@ MEDIA_ROOT = BASE_DIR / "media"
 #MEDIA_ROOT = Path(__file__).resolve().parent.parent / "media"
 AUTH_USER_MODEL = "accounts.Admin"
 
+CORS_ALLOWED_ORIGINS  = [
+    "https://red-product-frontend-ten.vercel.app",
+]
 CSRF_TRUSTED_ORIGINS = [
     "https://red-product-frontend-ten.vercel.app",
 ]
+
