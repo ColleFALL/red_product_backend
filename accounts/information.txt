@@ -1,0 +1,7 @@
+postgresql://red_product_db_gk7q_user:wM8QdrQ8cRbr4ysqPu8TYMA1vdfOKRBk@dpg-d5l5er4mrvns739n6qeg-a/red_product_db_gk7q
+
+
+https://dashboard.render.com/d/dpg-d5l5er4mrvns739n6qeg-a
+
+
+https://red-product-backend-eymz.onrender.com

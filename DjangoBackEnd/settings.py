@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "corsheaders",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,9 +51,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
-    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -153,12 +154,11 @@ ALLOWED_HOSTS = ["*"]
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
 
-
-
-
-
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 #MEDIA_ROOT = Path(__file__).resolve().parent.parent / "media"
 AUTH_USER_MODEL = "accounts.Admin"
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://red-product-frontend-ten.vercel.app",
+]
