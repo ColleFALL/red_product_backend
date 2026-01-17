@@ -27,9 +27,10 @@ class HotelSerializer(serializers.ModelSerializer):
         return None
 
     def validate(self, attrs):
-        # Champs obligatoires non nuls (backlog)
+    if self.instance is None:  # création
         required = ["nom", "adresse", "prix_par_nuit", "devise", "photo"]
         missing = [f for f in required if not attrs.get(f)]
         if missing:
             raise serializers.ValidationError({f: "Champ obligatoire" for f in missing})
-        return attrs
+    return attrs
+
