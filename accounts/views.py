@@ -8,6 +8,9 @@ from .models import PasswordResetToken
 from .serializers import RegisterSerializer, AdminPublicSerializer
 #resetmdp
 from .models import PasswordResetToken
+#photo
+from rest_framework.parsers import MultiPartParser, FormParser
+
 
 Admin = get_user_model()
 
@@ -108,3 +111,19 @@ class ResetPasswordView(APIView):
         prt.delete()
 
         return ok("Mot de passe mis à jour", None, 200)
+#photo
+class AvatarView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request):
+        file = request.FILES.get("photo")  # ✅ le champ attendu côté front
+
+        if not file:
+            return fail("Photo requise", None, 400)
+
+        user = request.user
+        user.photo = file
+        user.save()
+
+        return ok("Photo mise à jour", AdminPublicSerializer(user).data, 200)

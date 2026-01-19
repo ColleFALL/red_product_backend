@@ -23,13 +23,15 @@ class AdminManager(BaseUserManager):
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
         return self.create_user(email=email, password=password, name=name, **extra_fields)
-
+        
 class Admin(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=120)
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    photo = models.ImageField(upload_to="admins/", null=True, blank=True)
+
 
     objects = AdminManager()
 

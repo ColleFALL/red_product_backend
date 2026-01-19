@@ -25,4 +25,4 @@ class RegisterSerializer(serializers.ModelSerializer):
 class AdminPublicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Admin
-        fields = ["id", "name", "email", "created_at"]
+        fields = ["id", "name", "email", "created_at","photo"]
