@@ -49,6 +49,42 @@ class LoginView(APIView):
             if not email or not password:
                 return fail("Email et mot de passe requis", None, 400)
 
+            # ✅ Auth manuelle (robuste)
+            user = Admin.objects.filter(email=email).first()
+            if not user or not user.check_password(password):
+                return fail("Identifiants invalides", None, 401)
+
+            if not user.is_active:
+                return fail("Compte désactivé", None, 403)
+
+            refresh = RefreshToken.for_user(user)
+            access = str(refresh.access_token)
+
+            data = {
+                "access": access,
+                "refresh": str(refresh),
+                "admin": AdminPublicSerializer(user).data,
+                "remember": remember,
+            }
+            return ok("Connecté", data, 200)
+
+        except Exception as e:
+            # ✅ TEMPORAIRE : pour voir la vraie erreur en prod
+            return Response(
+                {"success": False, "message": "SERVER_ERROR", "error": str(e)},
+                status=500
+            )
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        try:
+            email = (request.data.get("email") or "").lower().strip()
+            password = request.data.get("password") or ""
+            remember = bool(request.data.get("remember", False))
+
+            if not email or not password:
+                return fail("Email et mot de passe requis", None, 400)
+
             # ✅ Auth manuelle (évite authenticate backend)
             user = Admin.objects.filter(email=email).first()
             if not user or not user.check_password(password):
