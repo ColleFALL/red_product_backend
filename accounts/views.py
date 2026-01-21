@@ -52,84 +52,29 @@ class LoginView(APIView):
             remember = bool(request.data.get("remember", False))
 
             if not email or not password:
-                return Response({"message": "Email et mot de passe requis"}, status=400)
+                return fail("Email et mot de passe requis", None, 400)
 
             user = Admin.objects.filter(email=email).first()
             if not user or not user.check_password(password):
-                return Response({"message": "Identifiants invalides"}, status=401)
+                return fail("Identifiants invalides", None, 401)
 
             if not user.is_active:
-                return Response({"message": "Compte désactivé"}, status=403)
+                return fail("Compte désactivé", None, 403)
 
             refresh = RefreshToken.for_user(user)
-            return Response({
+
+            data = {
                 "access": str(refresh.access_token),
                 "refresh": str(refresh),
+                "admin": AdminPublicSerializer(user).data,
                 "remember": remember,
-            }, status=200)
+            }
+            return ok("Connecté", data, 200)
 
         except Exception as e:
-            print("LOGIN ERROR:", str(e))
+            print("LOGIN ERROR:", repr(e))
             traceback.print_exc()
-            return Response(
-                {"message": "Erreur serveur", "detail": str(e)},
-                status=500
-            )
-
-
-    permission_classes = [permissions.AllowAny]
-
-    def post(self, request):
-        email = (request.data.get("email") or "").lower().strip()
-        password = request.data.get("password") or ""
-        remember = bool(request.data.get("remember", False))
-
-        if not email or not password:
-            return fail("Email et mot de passe requis", None, 400)
-
-        # ✅ Auth manuelle (robuste avec user custom)
-        user = Admin.objects.filter(email=email).first()
-        if not user or not user.check_password(password):
-            return fail("Identifiants invalides", None, 401)
-
-        if not user.is_active:
-            return fail("Compte désactivé", None, 403)
-
-        refresh = RefreshToken.for_user(user)
-        access = str(refresh.access_token)
-
-        data = {
-            "access": access,
-            "refresh": str(refresh),
-            "admin": AdminPublicSerializer(user).data,
-            "remember": remember,
-        }
-        return ok("Connecté", data, 200)
-
-    permission_classes = [permissions.AllowAny]
-
-    def post(self, request):
-        email = (request.data.get("email") or "").lower().strip()
-        password = request.data.get("password") or ""
-        remember = bool(request.data.get("remember", False))
-
-        if not email or not password:
-            return fail("Email et mot de passe requis", None, 400)
-
-        user = authenticate(request, email=email, password=password)
-        if not user:
-            return fail("Identifiants invalides", None, 401)
-
-        refresh = RefreshToken.for_user(user)
-        access = str(refresh.access_token)
-
-        data = {
-            "access": access,
-            "refresh": str(refresh),
-            "admin": AdminPublicSerializer(user).data,
-            "remember": remember,
-        }
-        return ok("Connecté", data, 200)
+            return Response({"success": False, "message": "Erreur serveur", "detail": str(e)}, status=500)
 
 class MeView(APIView):
     permission_classes = [permissions.IsAuthenticated]
