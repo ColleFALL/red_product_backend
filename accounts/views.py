@@ -89,7 +89,7 @@ class ForgotPasswordView(APIView):
     def post(self, request):
         email = (request.data.get("email") or "").lower().strip()
 
-        # ✅ réponse générique (sécurité)
+        #  réponse générique (sécurité)
         if not email:
             return ok("Si cet email existe, vous recevrez un message.", None, 200)
 
@@ -97,7 +97,7 @@ class ForgotPasswordView(APIView):
         if user:
             prt = PasswordResetToken.create_for(user, hours=1)
 
-            # ✅ MOCK email : on log en console (plus tard SMTP)
+            #  MOCK email : on log en console (plus tard SMTP)
             print(f"[FORGOT PASSWORD] email={email} token={prt.token} expires={prt.expires_at}")
 
         return ok("Si cet email existe, vous recevrez un message.", None, 200)
@@ -117,10 +117,10 @@ class ResetPasswordView(APIView):
             return fail("Token invalide ou expiré", None, 400)
 
         admin = prt.admin
-        admin.set_password(new_password)  # ✅ hash Django
+        admin.set_password(new_password)  #  hash Django
         admin.save()
 
-        # ✅ on invalide le token après usage
+        #  on invalide le token après usage
         prt.delete()
 
         return ok("Mot de passe mis à jour", None, 200)
