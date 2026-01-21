@@ -13,6 +13,4 @@ urlpatterns = [
     path("reset-password/", ResetPasswordView.as_view()),
     path("avatar/", AvatarView.as_view()),
 
-
-
 ]
