@@ -9,7 +9,7 @@ from .serializers import RegisterSerializer, AdminPublicSerializer
 #resetmdp
 from .models import PasswordResetToken
 #photo
-from rest_framework.parsers import MultiPartParser, FormParser
+# from rest_framework.parsers import MultiPartParser, FormParser
 import traceback
 from rest_framework import status
 
