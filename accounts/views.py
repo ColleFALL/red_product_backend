@@ -10,7 +10,8 @@ from .serializers import RegisterSerializer, AdminPublicSerializer
 from .models import PasswordResetToken
 #photo
 from rest_framework.parsers import MultiPartParser, FormParser
-
+import traceback
+from rest_framework import status
 
 Admin = get_user_model()
 
@@ -37,6 +38,10 @@ class RegisterView(APIView):
         user = serializer.save(email=email)
         return ok("Compte créé", AdminPublicSerializer(user).data, 201)
 
+from rest_framework.response import Response
+from rest_framework import status
+import traceback
+
 class LoginView(APIView):
     permission_classes = [permissions.AllowAny]
 
@@ -47,69 +52,30 @@ class LoginView(APIView):
             remember = bool(request.data.get("remember", False))
 
             if not email or not password:
-                return fail("Email et mot de passe requis", None, 400)
+                return Response({"message": "Email et mot de passe requis"}, status=400)
 
-            # ✅ Auth manuelle (robuste)
             user = Admin.objects.filter(email=email).first()
             if not user or not user.check_password(password):
-                return fail("Identifiants invalides", None, 401)
+                return Response({"message": "Identifiants invalides"}, status=401)
 
             if not user.is_active:
-                return fail("Compte désactivé", None, 403)
+                return Response({"message": "Compte désactivé"}, status=403)
 
             refresh = RefreshToken.for_user(user)
-            access = str(refresh.access_token)
-
-            data = {
-                "access": access,
+            return Response({
+                "access": str(refresh.access_token),
                 "refresh": str(refresh),
-                "admin": AdminPublicSerializer(user).data,
                 "remember": remember,
-            }
-            return ok("Connecté", data, 200)
+            }, status=200)
 
         except Exception as e:
-            # ✅ TEMPORAIRE : pour voir la vraie erreur en prod
+            print("LOGIN ERROR:", str(e))
+            traceback.print_exc()
             return Response(
-                {"success": False, "message": "SERVER_ERROR", "error": str(e)},
+                {"message": "Erreur serveur", "detail": str(e)},
                 status=500
             )
-    permission_classes = [permissions.AllowAny]
 
-    def post(self, request):
-        try:
-            email = (request.data.get("email") or "").lower().strip()
-            password = request.data.get("password") or ""
-            remember = bool(request.data.get("remember", False))
-
-            if not email or not password:
-                return fail("Email et mot de passe requis", None, 400)
-
-            # ✅ Auth manuelle (évite authenticate backend)
-            user = Admin.objects.filter(email=email).first()
-            if not user or not user.check_password(password):
-                return fail("Identifiants invalides", None, 401)
-
-            if not user.is_active:
-                return fail("Compte désactivé", None, 403)
-
-            refresh = RefreshToken.for_user(user)
-            access = str(refresh.access_token)
-
-            data = {
-                "access": access,
-                "refresh": str(refresh),
-                "admin": AdminPublicSerializer(user).data,
-                "remember": remember,
-            }
-            return ok("Connecté", data, 200)
-
-        except Exception as e:
-            # ✅ TEMPORAIRE : pour voir la vraie erreur en prod
-            return Response(
-                {"success": False, "message": "SERVER_ERROR", "error": str(e)},
-                status=500
-            )
 
     permission_classes = [permissions.AllowAny]
 
