@@ -11,6 +11,6 @@ urlpatterns = [
     path("me/", MeView.as_view()),
     path("forgot-password/", ForgotPasswordView.as_view()),
     path("reset-password/", ResetPasswordView.as_view()),
-    path("avatar/", AvatarView.as_view()),
+    # path("avatar/", AvatarView.as_view()),
 
 ]

@@ -125,18 +125,18 @@ class ResetPasswordView(APIView):
 
         return ok("Mot de passe mis à jour", None, 200)
 #photo
-class AvatarView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-    parser_classes = [MultiPartParser, FormParser]
+# class AvatarView(APIView):
+#     permission_classes = [permissions.IsAuthenticated]
+#     parser_classes = [MultiPartParser, FormParser]
 
-    def post(self, request):
-        file = request.FILES.get("photo")  # ✅ le champ attendu côté front
+#     def post(self, request):
+#         file = request.FILES.get("photo")  # ✅ le champ attendu côté front
 
-        if not file:
-            return fail("Photo requise", None, 400)
+#         if not file:
+#             return fail("Photo requise", None, 400)
 
-        user = request.user
-        user.photo = file
-        user.save()
+#         user = request.user
+#         user.photo = file
+#         user.save()
 
-        return ok("Photo mise à jour", AdminPublicSerializer(user).data, 200)
+#         return ok("Photo mise à jour", AdminPublicSerializer(user).data, 200)
