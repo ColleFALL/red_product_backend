@@ -130,7 +130,7 @@ class ResetPasswordView(APIView):
 #     parser_classes = [MultiPartParser, FormParser]
 
 #     def post(self, request):
-#         file = request.FILES.get("photo")  # ✅ le champ attendu côté front
+#         file = request.FILES.get("photo")  # le champ attendu côté front
 
 #         if not file:
 #             return fail("Photo requise", None, 400)

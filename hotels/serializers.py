@@ -35,16 +35,25 @@ from rest_framework import serializers
 from .models import Hotel
 
 class HotelSerializer(serializers.ModelSerializer):
-    photo_url = serializers.SerializerMethodField()
+    photo_url = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Hotel
-        fields = "__all__"
-        # ou si tu veux être explicite :
-        # fields = ["id","nom","adresse","email","telephone","prix_par_nuit","devise","photo","photo_url","created_at","updated_at"]
+        fields = [
+            "id",
+            "nom",
+            "adresse",
+            "email",
+            "telephone",
+            "prix_par_nuit",
+            "devise",
+            "photo",        # upload
+            "photo_url",    # affichage
+            "created_at",
+            "updated_at",
+        ]
 
     def get_photo_url(self, obj):
-        request = self.context.get("request")
-        if obj.photo and hasattr(obj.photo, "url"):
-            return request.build_absolute_uri(obj.photo.url) if request else obj.photo.url
+        if obj.photo:
+            return obj.photo.url  # ✅ Cloudinary URL
         return None

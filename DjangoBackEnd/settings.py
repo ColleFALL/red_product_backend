@@ -35,6 +35,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+      "cloudinary",
+    "cloudinary_storage",
    
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,14 +44,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'rest_framework', 
     "rest_framework_simplejwt",
     "django_filters",
+
     "accounts",
     "hotels",
     "dashboard",
-     "corsheaders",
+
+    "corsheaders",
+
+    
 ]
+
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -131,6 +141,14 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    "API_KEY": os.environ.get("CLOUDINARY_API_KEY"),
+    "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET"),
+}
+
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
