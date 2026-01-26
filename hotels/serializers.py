@@ -15,7 +15,7 @@ class HotelSerializer(serializers.ModelSerializer):
             "prix_par_nuit",
             "devise",
             "photo",        # upload
-            # "photo_url",    # affichage
+            "photo_url",    # affichage
             "created_at",
             "updated_at",
         ]
