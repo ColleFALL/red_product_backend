@@ -11,7 +11,7 @@ class HotelViewSet(viewsets.ModelViewSet):
     serializer_class = HotelSerializer
     permission_classes = [AllowAny]
 
-    parser_classes = [ FormParser, JSONParser]  # ✅ AJOUT
+    parser_classes = [MultiPartParser, FormParser, JSONParser]  # ✅ AJOUT
     # BE-9 : Recherche + tri (pagination DRF déjà active via settings)
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     search_fields = ["nom", "adresse"]
