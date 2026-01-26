@@ -1,4 +1,5 @@
 from django.db import models
+from cloudinary.models import CloudinaryField
 
 class Hotel(models.Model):
     nom = models.CharField(max_length=200)
@@ -8,8 +9,8 @@ class Hotel(models.Model):
     prix_par_nuit = models.DecimalField(max_digits=12, decimal_places=2)
     devise = models.CharField(max_length=10)
     
-    # Stockage local du fichier
-    photo = models.ImageField(upload_to='hotels/', blank=True, null=True)
+    # ✅ Utiliser CloudinaryField
+    photo = CloudinaryField('image', blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

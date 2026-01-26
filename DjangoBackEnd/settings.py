@@ -15,6 +15,9 @@ import os
 from pathlib import Path
 import dj_database_url
 
+from dotenv import load_dotenv
+load_dotenv()
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -146,11 +149,26 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # ✅ Required: évite l'erreur settings.STATICFILES_STORAGE
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# CLOUDINARY_STORAGE = {
-#     "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME"),
-#     "API_KEY": os.environ.get("CLOUDINARY_API_KEY"),
-#     "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET"),
-# }
+# Configuration Cloudinary
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME", "dxkadqzzz"),
+    "API_KEY": os.environ.get("CLOUDINARY_API_KEY", "731133196691316"),
+    "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET", "dMXw_Vg15CsscxLbW5n1s5xA16Q"),
+}
+
+cloudinary.config(
+    cloud_name=CLOUDINARY_STORAGE["CLOUD_NAME"],
+    api_key=CLOUDINARY_STORAGE["API_KEY"],
+    api_secret=CLOUDINARY_STORAGE["API_SECRET"],
+    secure=True
+)
+
+# ✅ Utiliser Cloudinary pour les fichiers média
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 # DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 
