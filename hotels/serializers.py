@@ -1,35 +1,4 @@
 
-# from rest_framework import serializers
-# from .models import Hotel
-
-
-# class HotelSerializer(serializers.ModelSerializer):
-
-#     class Meta:
-#         model = Hotel
-#         fields = "__all__"
-
-#     def validate(self, attrs):
-#         """
-#         Validation globale (optionnelle)
-#         """
-#         return attrs
-
-#     def create(self, validated_data):
-#         """
-#         Création d'un hôtel
-#         """
-#         return Hotel.objects.create(**validated_data)
-
-#     def update(self, instance, validated_data):
-#         """
-#         Mise à jour d'un hôtel
-#         """
-#         for attr, value in validated_data.items():
-#             setattr(instance, attr, value)
-#         instance.save()
-#         return instance
-
 
 from rest_framework import serializers
 from .models import Hotel
