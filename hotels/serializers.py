@@ -24,5 +24,5 @@ class HotelSerializer(serializers.ModelSerializer):
 
     def get_photo_url(self, obj):
         if obj.photo:
-            return obj.photo.url  # ✅ Cloudinary URL
+            return obj.photo  # ✅ Cloudinary URL
         return None
