@@ -52,6 +52,10 @@ INSTALLED_APPS = [
     'rest_framework', 
     "rest_framework_simplejwt",
     "django_filters",
+    #ajout
+    'rest_framework_simplejwt.token_blacklist',
+    'djoser',
+    # 'corsheaders',
 
     "accounts",
     "hotels",
@@ -86,6 +90,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -148,6 +153,12 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # ✅ Required: évite l'erreur settings.STATICFILES_STORAGE
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+#ajout
+#CUSTOM USER MODEL
+AUTH_USER_MODEL = 'accounts.User' 
+
+# CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', 'http://localhost:5173').split(',')
+# CORS_ALLOW_CREDENTIALS = True
 
 # Configuration Cloudinary
 import cloudinary
@@ -190,7 +201,77 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=6),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    #ajout
+     'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': False,
+    
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
 }
+#EMAIL CONFIGURATION
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    # Option 2 : Gmail (pour production)
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+    DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
+
+    DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'USER_CREATE_PASSWORD_RETYPE': False,
+    
+    # ✅ ACTIVATION PAR EMAIL
+    'SEND_ACTIVATION_EMAIL': True,
+    'SEND_CONFIRMATION_EMAIL': False,
+    'USERNAME_CHANGED_EMAIL_CONFIRMATION': False,
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,
+    
+    'SET_USERNAME_RETYPE': False,
+    'SET_PASSWORD_RETYPE': False,
+      
+      # URLs pour le frontend
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'password-reset/{uid}/{token}',
+    
+    'SERIALIZERS': {
+        'user_create': 'accounts.serializers.UserCreateSerializer',
+        'user': 'accounts.serializers.UserSerializer',
+        'current_user': 'accounts.serializers.UserSerializer',
+    },
+    # Templates d'emails personnalisés
+    'EMAIL': {
+        'activation': 'accounts.email.ActivationEmail',
+        'confirmation': 'accounts.email.ConfirmationEmail',
+        'password_reset': 'accounts.email.PasswordResetEmail',
+    },
+}
+#Configuration du site pour les emails
+DOMAIN = os.environ.get('https://red-product-frontend-ten.vercel.app/', 'localhost:5173').replace('https://', '').replace('http://', '')
+SITE_NAME = 'RED PRODUCT'
+
+# Security settings for production
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
+
+
 ALLOWED_HOSTS = ["*"]
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
@@ -198,7 +279,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 #MEDIA_ROOT = Path(__file__).resolve().parent.parent / "media"
-AUTH_USER_MODEL = "accounts.Admin"
+AUTH_USER_MODEL = 'accounts.User'
 
 CORS_ALLOWED_ORIGINS  = [
     "https://red-product-frontend-ten.vercel.app",

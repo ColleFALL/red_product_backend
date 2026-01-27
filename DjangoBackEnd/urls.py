@@ -11,8 +11,12 @@ def home(request):
 urlpatterns = [
     path("", home),  #  racine /
     path("admin/", admin.site.urls),
+    # Djoser endpoints
+    path('api/auth/', include('djoser.urls')),
+    path('api/auth/', include('djoser.urls.jwt')),
+    
     # DRF login (optionnel)
-     path("api/auth/", include("accounts.urls")),
+    #  path("api/auth/", include("accounts.urls")),
      path("api/", include("dashboard.urls")),
      path("api/hotels/", include("hotels.urls")),
 
