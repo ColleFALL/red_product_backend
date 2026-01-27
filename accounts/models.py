@@ -14,6 +14,7 @@ class User(AbstractUser):
         return self.email
     
     class Meta:
+        db_table = "admin"  # <-- utilise la table existante
         verbose_name = 'Utilisateur'
         verbose_name_plural = 'Utilisateurs'
 
