@@ -44,7 +44,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']  # ⚠️ username requis pour createsuperuser
+    REQUIRED_FIELDS = []  # ⚠️ username requis pour createsuperuser
 
     class Meta:
         verbose_name = 'Utilisateur'
