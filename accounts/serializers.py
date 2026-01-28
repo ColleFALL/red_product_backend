@@ -9,16 +9,30 @@ class UserCreateSerializer(BaseUserCreateSerializer):
     class Meta(BaseUserCreateSerializer.Meta):
         model = User
         fields = ('id', 'email', 'name', 'password')
+        # ⚠️ AJOUT : Exclure username des champs requis
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
     
     def create(self, validated_data):
         # Extraction du name
         name = validated_data.pop('name', '')
         
-        # Génération automatique du username à partir de l'email
+        # ⚠️ Génération automatique du username AVANT la création
         email = validated_data.get('email')
-        validated_data['username'] = email.split('@')[0]
+        username = email.split('@')[0]
         
-        # ⚠️ Création de l'utilisateur ACTIF par défaut
+        # ⚠️ Vérifier si le username existe déjà et le rendre unique
+        base_username = username
+        counter = 1
+        while User.objects.filter(username=username).exists():
+            username = f"{base_username}{counter}"
+            counter += 1
+        
+        # ⚠️ Ajouter le username aux données validées
+        validated_data['username'] = username
+        
+        # Création de l'utilisateur
         user = User.objects.create_user(**validated_data)
         
         # Attribution du name
