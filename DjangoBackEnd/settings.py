@@ -39,7 +39,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-      "cloudinary",
+    "cloudinary",
     "cloudinary_storage",
    
     'django.contrib.admin',
@@ -49,23 +49,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'rest_framework', 
-    "rest_framework_simplejwt",
-    "django_filters",
-    #ajout
-    'rest_framework_simplejwt.token_blacklist',
-    'djoser',
-    # 'corsheaders',
-
-    "accounts",
+    # VOS APPS EN PREMIER (surtout accounts avec le modèle User personnalisé)
+    "accounts",      # ← DÉPLACÉ ICI EN PREMIER
     "hotels",
     "dashboard",
 
+    # PUIS LES APPS TIERCES
+    'rest_framework', 
+    "rest_framework_simplejwt",
+    "django_filters",
+    'rest_framework_simplejwt.token_blacklist',  # Maintenant après accounts
+    'djoser',  # Maintenant après accounts
     "corsheaders",
-
-    
 ]
-
 # DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 
