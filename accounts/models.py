@@ -33,7 +33,8 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=150, unique=True)  # ⚠️ AJOUTÉ
+    username = models.CharField(max_length=150, unique=True, blank=True, null=True) # Ajoute null=True
+      # ⚠️ AJOUTÉ
     email = models.EmailField(unique=True, verbose_name='Email')
     name = models.CharField(max_length=255, blank=True, verbose_name='Nom complet')
     
