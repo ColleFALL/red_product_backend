@@ -1,71 +1,54 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+from django.utils import timezone
 
 
-class User(AbstractUser):
-    email = models.EmailField(unique=True)
-    name = models.CharField(max_length=255, blank=True)
-    is_active = models.BooleanField(default=False)
+class UserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError('L\'adresse email est obligatoire')
+        
+        email = self.normalize_email(email)
+        
+        # ⚠️ Générer automatiquement le username depuis l'email
+        if 'username' not in extra_fields:
+            extra_fields['username'] = email.split('@')[0]
+        
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_active', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Le superuser doit avoir is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Le superuser doit avoir is_superuser=True.')
+
+        return self.create_user(email, password, **extra_fields)
+
+
+class User(AbstractBaseUser, PermissionsMixin):
+    username = models.CharField(max_length=150, unique=True)  # ⚠️ AJOUTÉ
+    email = models.EmailField(unique=True, verbose_name='Email')
+    name = models.CharField(max_length=255, blank=True, verbose_name='Nom complet')
     
+    is_active = models.BooleanField(default=True)  # ⚠️ CHANGÉ: True par défaut
+    is_staff = models.BooleanField(default=False)
+    date_joined = models.DateTimeField(default=timezone.now)
+
+    objects = UserManager()
+
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
-    
-    def __str__(self):
-        return self.email
-    
+    REQUIRED_FIELDS = ['username']  # ⚠️ username requis pour createsuperuser
+
     class Meta:
-        # db_table = "accounts_admin" # <-- utilise la table existante
         verbose_name = 'Utilisateur'
         verbose_name_plural = 'Utilisateurs'
 
-
-# class AdminManager(BaseUserManager):
-#     def create_user(self, email, password=None, name="", **extra_fields):
-#         if not email:
-#             raise ValueError("Email obligatoire")
-#         email = self.normalize_email(email)
-#         user = self.model(email=email, name=name, **extra_fields)
-#         user.set_password(password)  #  hash automatique
-#         user.save(using=self._db)
-#         return user
-
-#     def create_superuser(self, email, password=None, name="Admin", **extra_fields):
-#         extra_fields.setdefault("is_staff", True)
-#         extra_fields.setdefault("is_superuser", True)
-#         extra_fields.setdefault("is_active", True)
-#         return self.create_user(email=email, password=password, name=name, **extra_fields)
-        
-# class Admin(AbstractBaseUser, PermissionsMixin):
-#     name = models.CharField(max_length=120)
-#     email = models.EmailField(unique=True)
-#     is_active = models.BooleanField(default=True)
-#     is_staff = models.BooleanField(default=False)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     # photo = models.ImageField(upload_to="admins/", null=True, blank=True)
-
-
-#     objects = AdminManager()
-
-#     USERNAME_FIELD = "email"
-#     REQUIRED_FIELDS = ["name"]
-
-#     def __str__(self):
-#         return self.email
-
-
-# #mdp
-# class PasswordResetToken(models.Model):
-#     admin = models.ForeignKey("Admin", on_delete=models.CASCADE, related_name="reset_tokens")
-#     token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
-#     expires_at = models.DateTimeField()
-#     created_at = models.DateTimeField(auto_now_add=True)
-
-#     @staticmethod
-#     def create_for(admin, hours=1):
-#         return PasswordResetToken.objects.create(
-#             admin=admin,
-#             expires_at=timezone.now() + timedelta(hours=hours),
-#         )
-
-#     def is_valid(self):
-#         return timezone.now() < self.expires_at
+    def __str__(self):
+        return self.email
