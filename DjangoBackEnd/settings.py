@@ -242,11 +242,11 @@ else:
 # --- CONFIGURATION DU SITE POUR LES EMAILS ---
 # Sur Render, on récupère le DOMAIN dans les variables d'environnement.
 # Si la variable n'existe pas, on met ton URL Vercel par défaut.
-DOMAIN = os.environ.get('DOMAIN', 'red-product-frontend-ten.vercel.app')
-SITE_NAME = 'RED PRODUCT'
+# DOMAIN = os.environ.get('DOMAIN', 'red-product-frontend-ten.vercel.app')
+# SITE_NAME = 'RED PRODUCT'
 
-# Indispensable pour que le lien commence par https://
-PROTOCOL = 'https' if not DEBUG else 'http'
+# # Indispensable pour que le lien commence par https://
+# PROTOCOL = 'https' if not DEBUG else 'http'
 
 
 # CORS Configuration
@@ -254,15 +254,41 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:3000",
     "https://red-product-frontend-ten.vercel.app",
+    "https://red-product-backend-eymz.onrender.com",  # ✅ AJOUT IMPORTANT
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:3000",
     "https://red-product-frontend-ten.vercel.app",
+    "https://red-product-backend-eymz.onrender.com",  # ✅ AJOUT IMPORTANT
 ]
 
+CORS_ALLOW_ALL_ORIGINS = False  # ✅ Explicite
 CORS_ALLOW_CREDENTIALS = True
+
+
+# ✅ AJOUTEZ CES LIGNES (très importantes pour JWT et les requêtes POST/PUT/DELETE)
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 
 
 # Security settings for production
