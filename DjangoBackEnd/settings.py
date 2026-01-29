@@ -472,6 +472,15 @@ SIMPLE_JWT = {
     'TOKEN_TYPE_CLAIM': 'token_type',
 }
 
+# --- CONFIGURATION DU SITE POUR LES EMAILS ---
+# Sur Render, on récupère le DOMAIN dans les variables d'environnement.
+# Si la variable n'existe pas, on met ton URL Vercel par défaut.
+DOMAIN = os.environ.get('DOMAIN', 'red-product-frontend-ten.vercel.app')
+SITE_NAME = 'RED PRODUCT'
+
+# Indispensable pour que le lien commence par https://
+PROTOCOL = 'https' if not DEBUG else 'http'
+
 
 # Djoser Configuration
 DJOSER = {
