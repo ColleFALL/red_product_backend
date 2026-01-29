@@ -250,12 +250,12 @@ else:
 
 
 # CORS Configuration
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://localhost:3000",
-    "https://red-product-frontend-ten.vercel.app",
-    "https://red-product-backend-eymz.onrender.com",  # ✅ AJOUT IMPORTANT
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:5173",
+#     "http://localhost:3000",
+#     "https://red-product-frontend-ten.vercel.app",
+#     "https://red-product-backend-eymz.onrender.com",  # ✅ AJOUT IMPORTANT
+# ]
 
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
