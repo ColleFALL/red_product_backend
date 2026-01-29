@@ -264,7 +264,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://red-product-backend-eymz.onrender.com",  # ✅ AJOUT IMPORTANT
 ]
 
-CORS_ALLOW_ALL_ORIGINS = False  # ✅ Explicite
+CORS_ALLOW_ALL_ORIGINS = True  # ✅ Explicite
 CORS_ALLOW_CREDENTIALS = True
 
 
