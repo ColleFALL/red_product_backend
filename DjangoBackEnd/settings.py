@@ -486,6 +486,8 @@ DJOSER = {
     
     'SET_USERNAME_RETYPE': False,
     'SET_PASSWORD_RETYPE': False,
+
+    'PROTOCOL': PROTOCOL,  # <--- AJOUTE CETTE LIGNE
     
     # URLs pour le frontend
     'ACTIVATION_URL': 'activate/{uid}/{token}',
@@ -513,9 +515,14 @@ else:
     DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
 
 
-# Configuration du site pour les emails
-DOMAIN = os.environ.get('DOMAIN', 'localhost:5173').replace('https://', '').replace('http://', '')
+# --- CONFIGURATION DU SITE POUR LES EMAILS ---
+# Sur Render, on récupère le DOMAIN dans les variables d'environnement.
+# Si la variable n'existe pas, on met ton URL Vercel par défaut.
+DOMAIN = os.environ.get('DOMAIN', 'red-product-frontend-ten.vercel.app')
 SITE_NAME = 'RED PRODUCT'
+
+# Indispensable pour que le lien commence par https://
+PROTOCOL = 'https' if not DEBUG else 'http'
 
 
 # CORS Configuration
