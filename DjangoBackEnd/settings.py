@@ -479,8 +479,8 @@ DJOSER = {
     'USER_CREATE_PASSWORD_RETYPE': False,
     
     # Activation par email (désactivé pour l'instant)
-    'SEND_ACTIVATION_EMAIL': False,
-    'SEND_CONFIRMATION_EMAIL': False,
+    'SEND_ACTIVATION_EMAIL': True,
+    'SEND_CONFIRMATION_EMAIL': True,
     'USERNAME_CHANGED_EMAIL_CONFIRMATION': False,
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,
     
