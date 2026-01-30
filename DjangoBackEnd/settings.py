@@ -225,27 +225,39 @@ DJOSER = {
     },
 }
 
+# # =========================
+# # EMAIL CONFIG
+# # =========================
+# if DEBUG:
+#     # ✅ Dev: par défaut on affiche dans le terminal (pas d’envoi réel)
+#     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# else:
+#     # ✅ Prod: SMTP obligatoire
+#     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+#     EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
+#     EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+#     EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True") == "True"
+#     EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL", "False") == "True"
+#     EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+#     EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+#     DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
+#     EMAIL_TIMEOUT = int(os.environ.get("EMAIL_TIMEOUT", "30"))
+
+#     if not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
+#         raise ValueError("EMAIL_HOST_USER / EMAIL_HOST_PASSWORD manquants en prod")
 # =========================
 # EMAIL CONFIG
 # =========================
 if DEBUG:
-    # ✅ même logique que toi: en dev -> pas d'envoi réel, tu vois l'email dans le terminal
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 else:
-    # ✅ prod -> SMTP Gmail
-    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-    EMAIL_HOST = "smtp.gmail.com"
-    EMAIL_PORT = 587
-    EMAIL_USE_TLS = True
-    EMAIL_USE_SSL = False
-    EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-    EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
-    DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-    EMAIL_TIMEOUT = 30
+    EMAIL_BACKEND = "accounts.email_backends.BrevoAPIEmailBackend"
+    DEFAULT_FROM_EMAIL = os.environ.get(
+        "DEFAULT_FROM_EMAIL",
+        "RED PRODUCT <collefall118@gmail.com>"
+    )
 
-    # garde-fou pour éviter prod silencieux
-    if not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
-        raise ValueError("EMAIL_HOST_USER / EMAIL_HOST_PASSWORD manquants dans les variables d'environnement")
+
 
 # =========================
 # CORS / CSRF
@@ -256,9 +268,13 @@ CSRF_TRUSTED_ORIGINS = [
     "https://red-product-frontend-ten.vercel.app",
     "https://red-product-backend-eymz.onrender.com",
 ]
-
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "https://red-product-frontend-ten.vercel.app",
+]
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_CREDENTIALS = False
 
 CORS_ALLOW_HEADERS = [
     "accept",
