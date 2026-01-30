@@ -256,6 +256,7 @@ else:
         "DEFAULT_FROM_EMAIL",
         "RED PRODUCT <collefall118@gmail.com>"
     )
+EMAIL_FAIL_SILENTLY = False
 
 
 

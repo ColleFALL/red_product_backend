@@ -1,0 +1,67 @@
+[33m19ece9f[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m implentation de Brevo2 30\01
+[33m317f214[m implentation de Brevo1 30\01
+[33mce312d7[m implentation de Brevo 30\01
+[33me533682[m debug email 30\01
+[33mcb8de02[m reglages des cors7
+[33mfda31db[m reglages des cors5
+[33m7c1f91a[m reglages des cors4
+[33mce083db[m reglages des cors3
+[33m5c49a20[m reglages des cors2
+[33m69678e5[m reglages des cors
+[33m67e1453[m corrections des fichier10
+[33me090bc9[m corrections des fichier6
+[33m45440b6[m corrections des fichier5
+[33m991c64c[m corrections des fichier4
+[33mfe20d6f[m corrections des fichier3
+[33m2f95a8d[m corrections des fichier2
+[33md97d15d[m corrections des fichiers
+[33mb775210[m Final fix3
+[33mb4fcb37[m Final fix2
+[33m9f27a12[m Final fix
+[33mcc15446[m change serializer3
+[33mc0253a9[m change serializer2
+[33m62fceee[m change serializer
+[33m9581e26[m Fix authentication configuration and User model
+[33macaf570[m Add migration reset script2
+[33mbae907e[m Add migration reset script
+[33md8922ea[m Fix migration order - move accounts app before token_blacklist
+[33ma873135[m creation du table  user
+[33m96ebe35[m djoser en place6
+[33mb18a7c6[m djoser en place5
+[33m4bf95e8[m djoser en place4
+[33maf66ed0[m djoser en place3
+[33me11aac9[m djoser en place2
+[33m44037e1[m djoser en place
+[33m8c5a454[m cloudnary remis2
+[33mad3cb68[m cloudnary remis
+[33m7e6b2d6[m suppression cloudanry3
+[33m476f891[m suppression cloudanry2
+[33mec4268e[m suppression cloudanry
+[33m09d5128[m debug image4
+[33m4c6cc56[m debug image3
+[33m38eba35[m debug image
+[33mf68a810[m cloudnary5
+[33m7f0a7cd[m cloudnary4
+[33mb0693ec[m cloudnary3
+[33md9a3eff[m cloudnary1
+[33mfc7ab06[m cloudnary
+[33mb6f9cf6[m upload photo
+[33m797b248[m ajoute endpoint
+[33m008abf7[m commente du champ photo3
+[33md2b098f[m commente du champ photo2
+[33m79472dc[m commente du champ photo1
+[33m52eac42[m commente du champ photo
+[33mb8f0f20[m debug login7
+[33m0de8440[m debug login6
+[33mee8dd84[m debug login5
+[33m78c4762[m debug login4
+[33m242d7e8[m debug login3
+[33mbeb2ead[m debug login2
+[33m7783f44[m debug login
+[33m8db610f[m debug photo
+[33m7ad020b[m debug 7
+[33mb505a45[m debug
+[33m5d88610[m fix cors for vercel frontend
+[33mff25265[m cors for vercel frontend
+[33mc67a2d5[m deploy django on rebder
+[33md31c6b4[m creation des api ok

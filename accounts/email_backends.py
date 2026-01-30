@@ -48,11 +48,15 @@ class BrevoAPIEmailBackend(BaseEmailBackend):
                 "htmlContent": msg.body or "",
             }
 
-            r = requests.post(BREVO_API_URL, json=payload, headers=headers, timeout=20)
+                      r = requests.post(BREVO_API_URL, json=payload, headers=headers, timeout=20)
 
             if 200 <= r.status_code < 300:
                 sent += 1
             else:
+                # ✅ log visible dans Render
+                print("BREVO_ERROR_STATUS:", r.status_code)
+                print("BREVO_ERROR_BODY:", r.text)
+
                 if not self.fail_silently:
                     raise Exception(f"Brevo API error {r.status_code}: {r.text}")
 
