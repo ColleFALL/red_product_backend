@@ -614,15 +614,21 @@ CORS_ALLOW_METHODS = [
 ]
 
 # =========================
-# SECURITY (PROD)
+# SECURITY
 # =========================
-if not DEBUG:
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    X_FRAME_OPTIONS = "DENY"
+DEBUG = os.environ.get("DEBUG", "True") == "True"
+
+if DEBUG:
+    ALLOWED_HOSTS = ["*"]
+else:
+    # ✅ domaines autorisés en prod
+    ALLOWED_HOSTS = [
+        "red-product-backend-eymz.onrender.com",
+        ".onrender.com",
+        "localhost",
+        "127.0.0.1",
+    ]
+
 
 # =========================
 # LOGGING (✅ VOIR ERREURS SUR RENDER)
