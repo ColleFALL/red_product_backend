@@ -60,8 +60,12 @@ class BrevoAPIEmailBackend(BaseEmailBackend):
             if mimetype == "text/html":
                 html_content = alt
 
-        sender_email = self._extract_email(self.from_raw)
-        sender_name = self._extract_name(self.from_raw) or "RED PRODUCT"
+       sender_email = (self._extract_email(self.from_raw) or "").strip()
+sender_name = "RED PRODUCT"
+
+if not sender_email:
+    raise Exception("Brevo: DEFAULT_FROM_EMAIL is empty/invalid")
+
 
         data = {
             "sender": {"email": sender_email, "name": sender_name},
