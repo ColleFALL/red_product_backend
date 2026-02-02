@@ -1,8 +1,3 @@
-## Contexte
-
-Projet réalisé dans le cadre d’un stage de fin de formation
-Objectif : concevoir une interface utilisateur moderne, sécurisée et maintenable.
-
 
 ---
 
@@ -113,7 +108,7 @@ EMAIL_HOST=...
  Frontend
 
 Cette API est consommée par le frontend React disponible ici :
- Repo Frontend : (ajouter le lien GitHub)
+ Repo Frontend : https://github.com/ColleFALL/red_product_frontend.git
 
 ## Contexte
 
