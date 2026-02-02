@@ -544,36 +544,47 @@ DJOSER = {
     },
 }
 
+# # =========================
+# # EMAIL CONFIG (✅ SMTP DJANGO)
+# # =========================
+# EMAIL_FAIL_SILENTLY = False
+
+# if DEBUG:
+#     # Dev: affiche dans le terminal
+#     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# else:
+#     # Prod: SMTP
+#     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+#     EMAIL_HOST = os.environ.get("EMAIL_HOST", "")
+#     EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+#     EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+#     EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+
+#     EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True") == "True"
+#     EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL", "False") == "True"
+
+#     # ✅ Evite config invalide TLS+SSL
+#     if EMAIL_USE_TLS and EMAIL_USE_SSL:
+#         raise ValueError("Choisis TLS (587) OU SSL (465), pas les deux.")
+
+#     DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
+#     SERVER_EMAIL = os.environ.get("SERVER_EMAIL", DEFAULT_FROM_EMAIL)
+#     EMAIL_TIMEOUT = int(os.environ.get("EMAIL_TIMEOUT", "30"))
+
+#     if not EMAIL_HOST or not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
+#         raise ValueError("SMTP env vars missing: EMAIL_HOST/USER/PASSWORD")
 # =========================
-# EMAIL CONFIG (✅ SMTP DJANGO)
+# EMAIL CONFIG
 # =========================
 EMAIL_FAIL_SILENTLY = False
 
 if DEBUG:
-    # Dev: affiche dans le terminal
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 else:
-    # Prod: SMTP
-    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-
-    EMAIL_HOST = os.environ.get("EMAIL_HOST", "")
-    EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
-    EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
-    EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
-
-    EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True") == "True"
-    EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL", "False") == "True"
-
-    # ✅ Evite config invalide TLS+SSL
-    if EMAIL_USE_TLS and EMAIL_USE_SSL:
-        raise ValueError("Choisis TLS (587) OU SSL (465), pas les deux.")
-
-    DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
-    SERVER_EMAIL = os.environ.get("SERVER_EMAIL", DEFAULT_FROM_EMAIL)
-    EMAIL_TIMEOUT = int(os.environ.get("EMAIL_TIMEOUT", "30"))
-
-    if not EMAIL_HOST or not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
-        raise ValueError("SMTP env vars missing: EMAIL_HOST/USER/PASSWORD")
+    # ✅ PROD (Render) : Brevo API (HTTPS)
+    EMAIL_BACKEND = "accounts.email_backends.BrevoAPIEmailBackend"
+    DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "RED-PRODUCT <collefall118@gmial.com>")
 
 # =========================
 # CORS / CSRF
