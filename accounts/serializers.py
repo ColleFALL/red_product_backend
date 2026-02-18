@@ -1,4 +1,3 @@
-
 from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer
 from djoser.serializers import UserSerializer as BaseUserSerializer
 from django.contrib.auth import get_user_model
@@ -16,9 +15,8 @@ class UserCreateSerializer(BaseUserCreateSerializer):
             "name": {"required": False}
         }
 
-    def create(self, validated_data):
-        # Le username sera généré automatiquement dans UserManager
-        return User.objects.create_user(**validated_data)
+    # ✅ CORRECTION : on supprime la méthode create() custom
+    # Djoser gère lui-même la création avec is_active=False + envoi email
 
 
 class UserSerializer(BaseUserSerializer):
