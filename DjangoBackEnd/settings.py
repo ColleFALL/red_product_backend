@@ -13,6 +13,8 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
 # =========================
 # SECURITY
 # =========================
@@ -50,6 +52,8 @@ INSTALLED_APPS = [
     "accounts",
     "hotels",
     "dashboard",
+    'chatbot',
+
 
     # Tiers
     "rest_framework",
@@ -134,7 +138,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 # =========================
 # CLOUDINARY
-# ⚠️ Recommandation: mets ces clés en env vars sur Render (ne pas hardcoder)
+#  Recommandation: mets ces clés en env vars sur Render (ne pas hardcoder)
 # =========================
 import cloudinary
 import cloudinary.uploader
