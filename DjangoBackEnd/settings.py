@@ -8,6 +8,10 @@ import os
 from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 
 load_dotenv()
 
@@ -140,9 +144,6 @@ MEDIA_ROOT = BASE_DIR / "media"
 # CLOUDINARY
 #  Recommandation: mets ces clés en env vars sur Render (ne pas hardcoder)
 # =========================
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
 
 CLOUDINARY_STORAGE = {
     "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME", "dxkadqzzz"),
@@ -202,7 +203,7 @@ SIMPLE_JWT = {
 # =========================
 DOMAIN = os.environ.get("DOMAIN", "red-product-frontend-ten.vercel.app")
 SITE_NAME = os.environ.get("SITE_NAME", "RED PRODUCT")
-PROTOCOL = os.environ.get("PROTOCOL", ("https" if not DEBUG else "http"))
+PROTOCOL = os.environ.get("PROTOCOL", "https" if not DEBUG else "http")
 
 # =========================
 # DJOSER
@@ -244,7 +245,7 @@ if DEBUG:
 else:
     # PROD (Render) : Brevo API (HTTPS)
     EMAIL_BACKEND = "accounts.email_backends.BrevoAPIEmailBackend"
-    DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "RED-PRODUCT <collefall118@gmial.com>")
+    DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "RED-PRODUCT <collefall118@gmail.com>")
 
 # =========================
 # CORS / CSRF
@@ -287,7 +288,7 @@ CORS_ALLOW_METHODS = [
 # =========================
 # SECURITY
 # =========================
-DEBUG = os.environ.get("DEBUG", "True") == "True"
+# DEBUG = os.environ.get("DEBUG", "True") == "True"
 
 if DEBUG:
     ALLOWED_HOSTS = ["*"]

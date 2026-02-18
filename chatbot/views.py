@@ -7,7 +7,6 @@ from .models import Conversation, Message
 from .services.gemini_service import ask_gemini
 from .services.context_service import build_context
 
-
 class ChatbotView(APIView):
     permission_classes = [IsAuthenticated]
 

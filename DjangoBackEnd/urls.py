@@ -13,7 +13,7 @@ urlpatterns = [
     path("", home),
     path("admin/", admin.site.urls),
     
-    # ✅ Djoser endpoints pour l'authentification
+    # Djoser endpoints pour l'authentification
     path('api/auth/', include('djoser.urls')),
     path('api/auth/', include('djoser.urls.jwt')),
     
