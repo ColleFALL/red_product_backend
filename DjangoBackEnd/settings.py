@@ -1,10 +1,10 @@
-
 """
 Django settings for DjangoBackEnd project.
 """
 
 from datetime import timedelta
 import os
+import sys
 from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
@@ -12,10 +12,11 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
-
-load_dotenv()
-
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(BASE_DIR / ".env")
+
+print("DEBUG VALUE:", os.getenv("DEBUG"), file=sys.stderr)
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
@@ -27,16 +28,20 @@ SECRET_KEY = os.environ.get(
     "django-insecure-jbe62ob*y3$=ty3@w9(p7asx_22oe^9eo5o(z06&o#olbn!e3^"
 )
 
+# =========================
+# DEBUG & ALLOWED_HOSTS
+# =========================
 DEBUG = os.environ.get("DEBUG", "True") == "True"
 
-# ✅ Mieux que ["*"] en prod (tu peux ajouter d'autres domaines si besoin)
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",") if not DEBUG else ["*"]
-if not DEBUG and not ALLOWED_HOSTS:
-    ALLOWED_HOSTS = [
-        "red-product-backend-eymz.onrender.com",
-        "localhost",
-        "127.0.0.1",
-    ]
+# ALLOWED_HOSTS depuis variable d'environnement, séparés par des virgules
+# Exemple sur Render : ALLOWED_HOSTS = red-product-backend-eymz.onrender.com
+allowed_hosts_env = os.environ.get("ALLOWED_HOSTS", "")
+if allowed_hosts_env:
+    ALLOWED_HOSTS = [host.strip() for host in allowed_hosts_env.split(",") if host.strip()]
+else:
+    # Par défaut en dev, tout est autorisé
+    ALLOWED_HOSTS = ["*"] if DEBUG else []
+
 
 # =========================
 # APPS
@@ -56,8 +61,7 @@ INSTALLED_APPS = [
     "accounts",
     "hotels",
     "dashboard",
-    'chatbot',
-
+    "chatbot",
 
     # Tiers
     "rest_framework",
@@ -142,9 +146,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 # =========================
 # CLOUDINARY
-#  Recommandation: mets ces clés en env vars sur Render (ne pas hardcoder)
 # =========================
-
 CLOUDINARY_STORAGE = {
     "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME", "dxkadqzzz"),
     "API_KEY": os.environ.get("CLOUDINARY_API_KEY", "731133196691316"),
@@ -211,23 +213,17 @@ PROTOCOL = os.environ.get("PROTOCOL", "https" if not DEBUG else "http")
 DJOSER = {
     "LOGIN_FIELD": "email",
     "USER_CREATE_PASSWORD_RETYPE": False,
-
     "SEND_ACTIVATION_EMAIL": True,
     "SEND_CONFIRMATION_EMAIL": False,
-
     "USERNAME_CHANGED_EMAIL_CONFIRMATION": False,
     "PASSWORD_CHANGED_EMAIL_CONFIRMATION": False,
-
     "SET_USERNAME_RETYPE": False,
     "SET_PASSWORD_RETYPE": False,
-
-    "ACTIVATION_URL": "activate/{uid}/{token}",
+    "ACTIVATION_URL": "activate?uid={uid}&token_encoded={token_encoded}",
     "PASSWORD_RESET_CONFIRM_URL": "password-reset/{uid}/{token}",
-
     "DOMAIN": DOMAIN,
     "SITE_NAME": SITE_NAME,
     "PROTOCOL": PROTOCOL,
-
     "SERIALIZERS": {
         "user_create": "accounts.serializers.UserCreateSerializer",
         "user": "accounts.serializers.UserSerializer",
@@ -239,11 +235,9 @@ DJOSER = {
 # EMAIL CONFIG
 # =========================
 EMAIL_FAIL_SILENTLY = False
-
 if DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 else:
-    # PROD (Render) : Brevo API (HTTPS)
     EMAIL_BACKEND = "accounts.email_backends.BrevoAPIEmailBackend"
     DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "RED-PRODUCT <collefall118@gmail.com>")
 
@@ -263,7 +257,6 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = False
-
 CORS_ALLOW_HEADERS = [
     "accept",
     "accept-encoding",
@@ -275,7 +268,6 @@ CORS_ALLOW_HEADERS = [
     "x-csrftoken",
     "x-requested-with",
 ]
-
 CORS_ALLOW_METHODS = [
     "DELETE",
     "GET",
@@ -286,24 +278,7 @@ CORS_ALLOW_METHODS = [
 ]
 
 # =========================
-# SECURITY
-# =========================
-# DEBUG = os.environ.get("DEBUG", "True") == "True"
-
-if DEBUG:
-    ALLOWED_HOSTS = ["*"]
-else:
-    #  domaines autorisés en prod
-    ALLOWED_HOSTS = [
-        "red-product-backend-eymz.onrender.com",
-        ".onrender.com",
-        "localhost",
-        "127.0.0.1",
-    ]
-
-
-# =========================
-# LOGGING ( VOIR ERREURS SUR RENDER)
+# LOGGING
 # =========================
 LOGGING = {
     "version": 1,

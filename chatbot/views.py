@@ -64,3 +64,37 @@ class ChatbotView(APIView):
                 {"success": False, "message": "Erreur chatbot"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+class ChatHistoryView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            conversation = Conversation.objects.filter(admin=request.user).first()
+            if not conversation:
+                return Response({"success": True, "data": {"messages": []}})
+
+            messages = list(
+                conversation.messages
+                .values("role", "content", "created_at")
+                .order_by("created_at")
+            )
+
+            return Response({"success": True, "data": {"messages": messages}})
+
+        except Exception as e:
+            return Response(
+                {"success": False, "message": "Erreur"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+class ClearConversationView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        try:
+            Conversation.objects.filter(admin=request.user).delete()
+            return Response({"success": True, "message": "Conversation supprimée"})
+        except Exception as e:
+            return Response(
+                {"success": False, "message": "Erreur"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
